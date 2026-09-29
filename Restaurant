@@ -1,0 +1,108 @@
+MENU = {
+    1: {"name": "Burger", "price": 250.00},
+    2: {"name": "Pizza", "price": 350.00},
+    3: {"name": "Pasta", "price": 180.00},
+    4: {"name": "French Fries", "price": 150.00},
+    5: {"name": "Soda", "price": 70.00}
+}
+
+cart = []
+
+
+# Function to display the menu
+def display_menu():
+    print("\n========== MENU ==========")
+    print("1. Burger - ₹250.00")
+    print("2. Pizza - ₹350.00")
+    print("3. Pasta - ₹180.00")
+    print("4. French Fries - ₹150.00")
+    print("5. Soda - ₹70.00")
+    print("==========================\n")
+
+
+# Function to take the customer's order
+def take_order():
+    while True:
+        display_menu()
+        print("Enter 0 when you are finished ordering.")
+
+        try:
+            choice = int(input("Select item number: "))
+
+            if choice == 0:
+                break
+
+            elif choice in MENU:
+                quantity = int(input("Enter quantity: "))
+
+                if quantity > 0:
+                    item_name = MENU[choice]["name"]
+                    item_price = MENU[choice]["price"]
+                    total_price = item_price * quantity
+
+                    cart.append({
+                        "name": item_name,
+                        "price": item_price,
+                        "quantity": quantity,
+                        "subtotal": total_price
+                    })
+
+                    print("Added", quantity, item_name, "to your order.\n")
+
+                else:
+                    print("Quantity must be at least 1.\n")
+
+            else:
+                print("Invalid item number. Please try again.\n")
+
+        except ValueError:
+            print("Invalid input! Please enter numbers only.\n")
+
+
+# Function to generate the final bill
+def generate_bill():
+    if not cart:
+        print("\nYou did not order anything.")
+        print("Thank you for visiting!")
+        return
+
+    print("\n========== YOUR BILL ==========")
+
+    subtotal = 0
+
+    for item in cart:
+        print(
+            item["name"],
+            "x",
+            item["quantity"],
+            "= ₹",
+            round(item["subtotal"], 2)
+        )
+
+        subtotal = subtotal + item["subtotal"]
+
+    # Calculate GST after calculating the complete subtotal
+    gst = subtotal * 0.05
+    grand_total = subtotal + gst
+
+    print("-------------------------------")
+    print("Subtotal: ₹", round(subtotal, 2))
+    print("GST (5%): ₹", round(gst, 2))
+    print("Grand Total: ₹", round(grand_total, 2))
+    print("===============================")
+
+    print("Thank you for dining with us!")
+    print("Have a great day!")
+
+
+# Main function
+def main():
+    print("Welcome to the Smart Restaurant Ordering System!")
+
+    take_order()
+    generate_bill()
+
+
+# Start the program
+if __name__ == "__main__":
+    main()
